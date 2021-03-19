@@ -8,9 +8,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
-    local = {
-      version = "~> 2.1"
-    }
   }
 }
 
@@ -21,7 +18,6 @@ provider "aws" {
 # Local values used in this module
 locals {
   module_common_tags = var.common_tags
-  eks_cluster_name = "eks-${var.region_name}-${var.solution_fqn}"
 }
 
 data aws_region current {

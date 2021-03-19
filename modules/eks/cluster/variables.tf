@@ -33,6 +33,26 @@ variable vpc_id {
   type = string
 }
 
+variable loadbalancer_id {
+  description = "Unique identifier of the loadbalancer in front of the AWS EKS cluster"
+  type = string
+}
+
+variable loadbalancer_security_group_id {
+  description = "Unique identifier of the loadbalancer in front of the AWS EKS cluster"
+  type = string
+}
+
+variable loadbalancer_target_group_id {
+  description = "Unique identifier of the loadbalancer's target group"
+  type = string
+}
+
+variable eksctl_config_file_dir {
+  description = "Name of a directory the eksctl configuration file should be copied to"
+  type = string
+}
+
 variable kubernetes_version {
   description = "Kubernetes version to be used for the AWS EKS cluster"
   type = string
@@ -49,4 +69,10 @@ variable node_group_max_size {
   description = "Maximum size of each node group attached to the AWS EKS cluster"
   type = number
   default = 8
+}
+
+variable node_group_instance_types {
+  description = "list of EC2 instance types which should be used for the AWS EKS worker node groups ordered descending by preference"
+  type = list(string)
+  default = [ "m6g.large", "m5a.large", "m5.large", "m4.large", "t3a.large", "t3.large", "t2.large"]
 }

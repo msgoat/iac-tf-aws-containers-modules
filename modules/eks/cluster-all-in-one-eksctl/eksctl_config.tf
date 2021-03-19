@@ -18,33 +18,32 @@ metadata:
 vpc:
   subnets:
     public:
-%{ for subnet in data.aws_subnet.subnets ~}
+%{ for subnet in aws_subnet.public_subnets ~}
       ${subnet.availability_zone}: { id: "${subnet.id}" }
 %{ endfor ~}
   clusterEndpoints:
     publicAccess: true
     privateAccess: true
 
-nodeGroups:
-%{ for subnet in data.aws_subnet.subnets ~}
-  - name: ng-${subnet.availability_zone}-spot-v1
+managedNodeGroups:
+%{ for subnet in aws_subnet.public_subnets ~}
+  - name: mng-${subnet.availability_zone}-${var.kubernetes_cluster_name}-spot-v1
+    amiFamily: "AmazonLinux2"
+    subnets:
+      - ${subnet.id}
+    desiredCapacity: ${local.node_group_desired_size}
     minSize: ${var.node_group_min_size}
     maxSize: ${var.node_group_max_size}
-    availabilityZones:
-      - ${subnet.availability_zone}
-    instancesDistribution:
-      maxPrice: 0.04
-      instanceTypes:
-        - m6g.large
-        - m5a.large
-        - m5.large
-        - m4.large
-        - t3a.large
-        - t3.large
-        - t2.large
-      onDemandBaseCapacity: 0
-      onDemandPercentageAboveBaseCapacity: 0
-      spotInstancePools: 10
+    volumeSize: ${var.node_group_volume_size}
+    volumeType: ${var.node_group_volume_type}
+    volumeEncrypted: true
+    volumeKmsKeyID: ${aws_kms_key.cmk.arn}
+    ssh:
+      allow: false
+    tags:
+%{ for key, value in local.module_common_tags ~}
+      ${key}: "${value}"
+%{ endfor ~}
     iam:
       withAddonPolicies:
         imageBuilder: true
@@ -58,17 +57,15 @@ nodeGroups:
         albIngress: true
         xRay: true
         cloudWatch: true
-    tags:
-%{ for key, value in local.module_common_tags ~}
-      ${key}: "${value}"
+    instanceTypes:
+%{ for instanceType in var.node_group_instance_types ~}
+      - ${instanceType}
 %{ endfor ~}
-    securityGroups:
-      withShared: true
-      withLocal: true
-      attachIDs: [ "${aws_security_group.ingress.id}" ]
+    spot: true
 %{ endfor ~}
-    targetGroupARNs:
-      - ${data.aws_alb_target_group.cluster.arn}
+
+secretsEncryption:
+  keyARN: ${aws_kms_key.cmk.arn}
 
 EOT
 }

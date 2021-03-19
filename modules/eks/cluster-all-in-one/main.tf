@@ -8,20 +8,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
-    local = {
-      version = "~> 2.1"
-    }
   }
 }
 
 provider "aws" {
   region = var.region_name
-}
-
-# Local values used in this module
-locals {
-  module_common_tags = var.common_tags
-  eks_cluster_name = "eks-${var.region_name}-${var.solution_fqn}"
 }
 
 data aws_region current {
@@ -32,6 +23,9 @@ data aws_availability_zones available_zones {
   state = "available"
 }
 
-output available_zones {
-  value = data.aws_availability_zones.available_zones.names
+locals {
+  module_common_tags = var.common_tags
+  solution_fqn = lower("${var.solution_name}-${var.solution_stage}-${var.kubernetes_cluster_name}")
+  eks_cluster_name = "eks-${var.region_name}-${local.solution_fqn}"
+  zones_to_span = var.zones_to_span >= 2 && var.zones_to_span < length(data.aws_availability_zones.available_zones.zone_ids) ? var.zones_to_span : length(data.aws_availability_zones.available_zones.zone_ids)
 }
