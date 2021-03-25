@@ -7,6 +7,7 @@ resource aws_security_group cluster_shared_node {
   }, local.module_common_tags)
 }
 
+/*
 resource aws_security_group_rule allow_any_ingress_between_nodes {
   type = "ingress"
   description = "allow any inbound traffic to nodes from nodes of the same cluster"
@@ -16,6 +17,7 @@ resource aws_security_group_rule allow_any_ingress_between_nodes {
   self = true
   security_group_id = aws_security_group.cluster_shared_node.id
 }
+*/
 
 resource aws_security_group_rule allow_any_egress_from_nodes {
   type = "egress"

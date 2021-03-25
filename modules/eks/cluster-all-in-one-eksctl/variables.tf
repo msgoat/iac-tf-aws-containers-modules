@@ -34,9 +34,9 @@ variable network_cidr {
 }
 
 variable zones_to_span {
-  description = "Number of availability zones the AWS EKS cluster should span; cluster will span all available availability zones, if not specified"
+  description = "Number of availability zones the AWS EKS cluster should span; cluster will span two available availability zones, if not specified"
   type = number
-  default = 0
+  default = 2
 }
 
 variable private_networking_enabled {
@@ -111,4 +111,22 @@ variable eksctl_config_file_dir {
 variable kube_config_file_dir {
   description = "Name of a directory the kube configuration file should be copied to"
   type = string
+}
+
+variable public_access_enabled {
+  description = "Controls if the Kubernetes control plane is accessible through public endpoints using public IP addresses"
+  type = bool
+  default = true
+}
+
+variable private_access_enabled {
+  description = "Controls if the Kubernetes control plane is accessible through private endpoints using private IP addresses"
+  type = bool
+  default = false
+}
+
+variable node_group_volume_encryption_enabled {
+  description = "Controls if all disks attached to worker nodes should be encrypted with your own disk encryption keys"
+  type = bool
+  default = false
 }

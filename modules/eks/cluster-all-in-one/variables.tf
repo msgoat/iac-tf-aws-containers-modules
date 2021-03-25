@@ -102,3 +102,14 @@ variable node_group_instance_types {
   type = list(string)
   default = [ "m5a.large", "m5.large", "m4.large", "t3a.large", "t3.large", "t2.large"]
 }
+
+variable private_endpoint_enabled {
+  description = "controls if the communication between worker nodes and control plane nodes should use private connections"
+  type = bool
+  default = false
+}
+
+variable kube_config_file_dir {
+  description = "Name of a directory the kube configuration file should be copied to"
+  type = string
+}

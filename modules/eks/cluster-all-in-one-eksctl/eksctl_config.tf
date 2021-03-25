@@ -22,8 +22,8 @@ vpc:
       ${subnet.availability_zone}: { id: "${subnet.id}" }
 %{ endfor ~}
   clusterEndpoints:
-    publicAccess: true
-    privateAccess: true
+    publicAccess: ${var.public_access_enabled}
+    privateAccess: ${var.private_access_enabled}
 
 managedNodeGroups:
 %{ for subnet in aws_subnet.public_subnets ~}
@@ -36,8 +36,10 @@ managedNodeGroups:
     maxSize: ${var.node_group_max_size}
     volumeSize: ${var.node_group_volume_size}
     volumeType: ${var.node_group_volume_type}
+%{ if var.node_group_volume_encryption_enabled ~}
     volumeEncrypted: true
     volumeKmsKeyID: ${aws_kms_key.cmk.arn}
+%{ endif ~}
     ssh:
       allow: false
     tags:

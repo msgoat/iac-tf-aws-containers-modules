@@ -23,8 +23,23 @@ users:
       apiVersion: client.authentication.k8s.io/v1alpha1
       command: aws-iam-authenticator
       args:
-        - "token"
-        - "-i"
-        - "${aws_eks_cluster.control_plane.name}"
+      - "token"
+      - "-i"
+      - "${aws_eks_cluster.control_plane.name}"
+      env:
+      - name: AWS_STS_REGIONAL_ENDPOINTS
+        value: regional
+      - name: AWS_DEFAULT_REGION
+        value: ${var.region_name}
+
 KUBECONFIG
+
+  generated_kube_config_filename = "${local.eks_cluster_name}.yaml"
+  normalized_kube_config_dirname = trimsuffix(var.kube_config_file_dir, "/")
+  kube_config_filename = "${local.normalized_kube_config_dirname}/${local.generated_kube_config_filename}"
+}
+
+resource local_file kube_config {
+  filename = local.kube_config_filename
+  content = local.kube_config
 }

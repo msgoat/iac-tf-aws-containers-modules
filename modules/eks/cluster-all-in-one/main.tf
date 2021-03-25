@@ -29,3 +29,4 @@ locals {
   eks_cluster_name = "eks-${var.region_name}-${local.solution_fqn}"
   zones_to_span = var.zones_to_span >= 2 && var.zones_to_span < length(data.aws_availability_zones.available_zones.zone_ids) ? var.zones_to_span : length(data.aws_availability_zones.available_zones.zone_ids)
 }
+

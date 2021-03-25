@@ -7,7 +7,9 @@ resource aws_eks_cluster control_plane {
   }, local.module_common_tags)
 
   vpc_config {
-    subnet_ids = aws_subnet.public_subnets.*.id
+    subnet_ids = var.private_endpoint_enabled ? concat(aws_subnet.public_subnets.*.id, aws_subnet.private_subnets.*.id) : aws_subnet.public_subnets.*.id
+    endpoint_public_access = true
+    endpoint_private_access = var.private_endpoint_enabled
     security_group_ids = [aws_security_group.cluster_shared_node.id]
     public_access_cidrs = var.inbound_traffic_cidrs
   }
