@@ -7,31 +7,31 @@ clusters:
 - cluster:
     server: ${aws_eks_cluster.control_plane.endpoint}
     certificate-authority-data: ${aws_eks_cluster.control_plane.certificate_authority.0.data}
-  name: ${aws_eks_cluster.control_plane.name}
+  name: ${aws_eks_cluster.control_plane.arn}
 contexts:
 - context:
-    cluster: ${aws_eks_cluster.control_plane.name}
-    user: aws
-  name: aws@${aws_eks_cluster.control_plane.name}
-current-context: aws
+    cluster: ${aws_eks_cluster.control_plane.arn}
+    user: ${aws_eks_cluster.control_plane.arn}
+  name: ${aws_eks_cluster.control_plane.arn}
+current-context: ${aws_eks_cluster.control_plane.arn}
 kind: Config
 preferences: {}
 users:
-- name: aws@${aws_eks_cluster.control_plane.name}
+- name: ${aws_eks_cluster.control_plane.arn}
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
-      command: aws-iam-authenticator
       args:
-      - "token"
-      - "-i"
-      - "${aws_eks_cluster.control_plane.name}"
+      - --region
+      - ${var.region_name}
+      - eks
+      - get-token
+      - --cluster-name
+      - ${aws_eks_cluster.control_plane.name}
+      command: aws
       env:
-      - name: AWS_STS_REGIONAL_ENDPOINTS
-        value: regional
-      - name: AWS_DEFAULT_REGION
-        value: ${var.region_name}
-
+      - name: AWS_PROFILE
+        value: ${var.aws_profile_name}
 KUBECONFIG
 
   generated_kube_config_filename = "${local.eks_cluster_name}.yaml"

@@ -23,17 +23,24 @@ variable solution_fqn {
   type = string
 }
 
-
-variable kube_config_filename {
+variable kube_config_file_name {
   description = "defines the location the kubeconfig file for the newly created cluster should be written to"
   type = string
 }
 
-variable kubernetes_namespaces {
-  description = "list of configuration parameters per Kubernetes namespace to create"
-  type = list(object({
-    namespace_name: string
-    istio_injection_enabled: bool
-    network_policy_enforced: bool
-  }))
+variable kubernetes_namespace_name {
+  description = "name of the Kubernetes namespace to create"
+  type = string
+}
+
+variable istio_injection_enabled {
+  description = "controls if Istio sidecar injection should be enabled on this namespace"
+  type = bool
+  default = false
+}
+
+variable network_policy_enforced {
+  description = "adds a network policy blocking any inbound traffic, thus enforcing each deployment to provide a network policy"
+  type = bool
+  default = true
 }

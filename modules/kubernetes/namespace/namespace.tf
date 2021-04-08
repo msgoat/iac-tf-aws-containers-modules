@@ -10,7 +10,6 @@ locals {
 
 # create a namespace for hello application
 resource kubernetes_namespace namespace {
-  count = length(var.kubernetes_namespace
   metadata {
     name = var.kubernetes_namespace_name
     labels = local.namespace_labels

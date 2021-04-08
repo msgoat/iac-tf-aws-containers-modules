@@ -1,0 +1,184 @@
+## Ref: https://github.com/kubernetes/autoscaler/blob/master/charts/cluster-autoscaler/values.yaml
+affinity: {}
+
+autoDiscovery:
+  clusterName: "@todo"
+
+containerSecurityContext: {}
+## Priorities Expander
+# expanderPriorities -- The expanderPriorities is used if `extraArgs.expander` is set to `priority` and expanderPriorities is also set with the priorities.
+# If `extraArgs.expander` is set to `priority`, then expanderPriorities is used to define cluster-autoscaler-priority-expander priorities.
+# See: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/expander/priority/readme.md
+expanderPriorities: {}
+
+# extraArgs -- Additional container arguments.
+# Refer to https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-the-parameters-to-ca for the full list of cluster autoscaler
+# parameters and their default values.
+extraArgs:
+  logtostderr: true
+  stderrthreshold: info
+  v: 4
+  # write-status-configmap: true
+  # status-config-map-name: cluster-autoscaler-status
+  # leader-elect: true
+  # skip-nodes-with-local-storage: true
+  # expander: random
+  # scale-down-enabled: true
+  # balance-similar-node-groups: true
+  # min-replica-count: 0
+  # scale-down-utilization-threshold: 0.5
+  # scale-down-non-empty-candidates-count: 30
+  # max-node-provision-time: 15m0s
+  # scan-interval: 10s
+  # scale-down-delay-after-add: 10m
+  # scale-down-delay-after-delete: 0s
+  # scale-down-delay-after-failure: 3m
+  # scale-down-unneeded-time: 10m
+  # skip-nodes-with-system-pods: true
+
+# extraEnv -- Additional container environment variables.
+extraEnv: {}
+
+# extraEnvConfigMaps -- Additional container environment variables from ConfigMaps.
+extraEnvConfigMaps: {}
+
+# extraEnvSecrets -- Additional container environment variables from Secrets.
+extraEnvSecrets: {}
+
+# envFromConfigMap -- ConfigMap name to use as envFrom.
+envFromConfigMap: ""
+
+# envFromSecret -- Secret name to use as envFrom.
+envFromSecret: ""
+
+# extraVolumeSecrets -- Additional volumes to mount from Secrets.
+extraVolumeSecrets: {}
+  # autoscaler-vol:
+  #   mountPath: /data/autoscaler/
+  # custom-vol:
+  #   name: custom-secret
+  #   mountPath: /data/custom/
+  #   items:
+  #     - key: subkey
+#       path: mypath
+
+# extraVolumes -- Additional volumes.
+extraVolumes: []
+  # - name: ssl-certs
+  #   hostPath:
+#     path: /etc/ssl/certs/ca-bundle.crt
+
+# extraVolumeMounts -- Additional volumes to mount.
+extraVolumeMounts: []
+  # - name: ssl-certs
+  #   mountPath: /etc/ssl/certs/ca-certificates.crt
+#   readOnly: true
+# nodeSelector -- Node labels for pod assignment. Ref: https://kubernetes.io/docs/user-guide/node-selection/.
+nodeSelector: {}
+
+# podAnnotations -- Annotations to add to each pod.
+podAnnotations: {}
+
+# podDisruptionBudget -- Pod disruption budget.
+podDisruptionBudget:
+ minAvailable: 1
+
+# podLabels -- Labels to add to each pod.
+podLabels: {}
+
+# additionalLabels -- Labels to add to each object of the chart.
+additionalLabels: {}
+
+# priorityClassName -- priorityClassName
+priorityClassName: ""
+
+rbac:
+  create: true
+  pspEnabled: false
+  serviceAccount:
+    # rbac.serviceAccount.annotations -- Additional Service Account annotations.
+    annotations: {}
+    # rbac.serviceAccount.create -- If `true` and `rbac.create` is also true, a Service Account will be created.
+    create: true
+    # rbac.serviceAccount.name -- The name of the ServiceAccount to use. If not set and create is `true`, a name is generated using the fullname template.
+    name: ""
+    # rbac.serviceAccount.automountServiceAccountToken -- Automount API credentials for a Service Account.
+    automountServiceAccountToken: true
+
+# replicaCount -- Desired number of pods
+replicaCount: 2
+
+# resources -- Pod resource requests and limits.
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 300Mi
+  # requests:
+  #   cpu: 100m
+#   memory: 300Mi
+
+# securityContext -- [Security context for pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
+securityContext: {}
+  # runAsNonRoot: true
+  # runAsUser: 1001
+# runAsGroup: 1001
+
+service:
+  # service.annotations -- Annotations to add to service
+  annotations: {}
+  # service.labels -- Labels to add to service
+  labels: {}
+  # service.externalIPs -- List of IP addresses at which the service is available. Ref: https://kubernetes.io/docs/user-guide/services/#external-ips.
+  externalIPs: []
+
+  # service.loadBalancerIP -- IP address to assign to load balancer (if supported).
+  loadBalancerIP: ""
+  # service.loadBalancerSourceRanges -- List of IP CIDRs allowed access to load balancer (if supported).
+  loadBalancerSourceRanges: []
+  # service.servicePort -- Service port to expose.
+  servicePort: 8085
+  # service.portName -- Name for service port.
+  portName: http
+  # service.type -- Type of service to create.
+  type: ClusterIP
+
+## Are you using Prometheus Operator?
+serviceMonitor:
+  # serviceMonitor.enabled -- If true, creates a Prometheus Operator ServiceMonitor.
+  enabled: false
+  # serviceMonitor.interval -- Interval that Prometheus scrapes Cluster Autoscaler metrics.
+  interval: 10s
+  # serviceMonitor.namespace -- Namespace which Prometheus is running in.
+  namespace: monitoring
+  ## [Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#prometheus-operator-1)
+  ## [Kube Prometheus Selector Label](https://github.com/helm/charts/tree/master/stable/prometheus-operator#exporters)
+  # serviceMonitor.selector -- Default to kube-prometheus install (CoreOS recommended), but should be set according to Prometheus install.
+  selector:
+    release: prometheus-operator
+  # serviceMonitor.path -- The path to scrape for metrics; autoscaler exposes `/metrics` (this is standard)
+  path: /metrics
+
+## Custom PrometheusRule to be defined
+## The value is evaluated as a template, so, for example, the value can depend on .Release or .Chart
+## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions
+prometheusRule:
+  # prometheusRule.enabled -- If true, creates a Prometheus Operator PrometheusRule.
+  enabled: false
+  # prometheusRule.additionalLabels -- Additional labels to be set in metadata.
+  additionalLabels: {}
+  # prometheusRule.namespace -- Namespace which Prometheus is running in.
+  namespace: monitoring
+  # prometheusRule.interval -- How often rules in the group are evaluated (falls back to `global.evaluation_interval` if not set).
+  interval: null
+  # prometheusRule.rules -- Rules spec template (see https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/api.md#rule).
+  rules: []
+
+# tolerations -- List of node taints to tolerate (requires Kubernetes >= 1.6).
+tolerations: []
+
+# updateStrategy -- [Deployment update strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
+updateStrategy: {}
+  # rollingUpdate:
+  #   maxSurge: 1
+  #   maxUnavailable: 0
+# type: RollingUpdate
