@@ -1,5 +1,5 @@
 resource aws_route53_record keycloak {
-  name = "iam.${var.public_dns_zone_name}"
+  name = "oidc.${var.public_dns_zone_name}"
   type = "A"
   zone_id = data.aws_route53_zone.host.id
 

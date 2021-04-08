@@ -10,6 +10,11 @@ resource helm_release keycloak {
   values = [file("${path.module}/resources/helm/keycloak/values.yaml")]
   set {
     name = "ingress.rules[0].host"
-    value = "iam.${var.public_dns_zone_name}"
+    value = "oidc.${var.public_dns_zone_name}"
   }
+  set {
+    name = "ingress.frontendUrl"
+    value = "https://oidc.${var.public_dns_zone_name}/auth/"
+  }
+  depends_on = [ kubernetes_secret.keycloak_db ]
 }

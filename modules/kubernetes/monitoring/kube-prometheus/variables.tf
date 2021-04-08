@@ -28,12 +28,6 @@ variable common_tags {
   type = map(string)
 }
 
-variable addon_enabled {
-  description = "Controls if this addon is actually activated"
-  type = bool
-  default = true
-}
-
 variable kube_config_file_name {
   description = "Full pathname of the kubeconfig file of the target AWS EKS cluster"
   type = string

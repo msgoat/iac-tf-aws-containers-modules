@@ -28,6 +28,11 @@ output private_subnet_ids {
   value = var.private_endpoint_enabled ? aws_subnet.private_subnets.*.id : []
 }
 
+output data_subnet_ids {
+  description = "Unique identifiers of all data subnets inside the VPC"
+  value = aws_subnet.data_subnets.*.id
+}
+
 output loadbalancer_security_group_id {
   description = "Unique identifier of a security group which allows an external loadbalancer to talk to the ingress controller via node ports"
   value = aws_security_group.lb_to_ingress.id

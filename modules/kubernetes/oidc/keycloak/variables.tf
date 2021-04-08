@@ -47,13 +47,13 @@ variable eks_cluster_name {
 variable kubernetes_namespace_name {
   description = "Name of the Kubernetes namespace to deploy to"
   type = string
-  default = "iam"
+  default = "oidc"
 }
 
 variable helm_release_name {
   description = "Name of the Helm release which represents a deployment of this stack"
   type = string
-  default = "iam"
+  default = "oidc"
 }
 
 variable public_dns_zone_name {

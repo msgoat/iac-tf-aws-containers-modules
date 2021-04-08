@@ -1,8 +1,8 @@
-resource aws_lb_listener_rule kibana {
+resource aws_lb_listener_rule keycloak {
   listener_arn = data.aws_lb_listener.https.arn
   condition {
     host_header {
-      values = ["iam.${var.public_dns_zone_name}"]
+      values = ["oidc.${var.public_dns_zone_name}"]
     }
   }
   action {
