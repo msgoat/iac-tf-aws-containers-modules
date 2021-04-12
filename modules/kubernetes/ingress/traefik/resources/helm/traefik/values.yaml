@@ -83,8 +83,11 @@ logs:
 
 globalArguments: []
 
+## trust all headers forwarded by application loadbalancer
 ## add jaeger tracing
 additionalArguments:
+  - "--entrypoints.web.forwardedheaders.insecure=true"
+  - "--entrypoints.websecure.forwardedheaders.insecure=true"
   - "--tracing.jaeger=true"
   - "--tracing.jaeger.samplingType=const"
   - "--tracing.jaeger.samplingParam=1.0"
@@ -189,11 +192,11 @@ autoscaling:
   - type: Resource
     resource:
       name: cpu
-      targetAverageUtilization: 60
+      targetAverageUtilization: 75
   - type: Resource
     resource:
       name: memory
-      targetAverageUtilization: 60
+      targetAverageUtilization: 75
 
 # Enable persistence using Persistent Volume Claims
 # ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
