@@ -8,6 +8,11 @@ output db_host_name {
   value = aws_db_instance.postgresql.endpoint
 }
 
+output db_host_ip {
+  description = "IP address of the DB endpoint"
+  value = aws_db_instance.postgresql.address
+}
+
 output db_port_number {
   description = "Port number of the DB endpoint"
   value = aws_db_instance.postgresql.port
@@ -21,5 +26,4 @@ output db_user_name {
 output db_user_password {
   description = "Password of the DB master user"
   value = aws_db_instance.postgresql.password
-  sensitive = true
 }
