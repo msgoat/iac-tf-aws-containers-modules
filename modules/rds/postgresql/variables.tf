@@ -71,3 +71,9 @@ variable vpc_id {
   description = "Unique identifier of the VPC supposed to host the Keycloak database"
   type = string
 }
+
+variable generate_url_friendly_password {
+  description = "Generates URL-friendly database passwords without special characters, if set to true"
+  type = bool
+  default = false
+}

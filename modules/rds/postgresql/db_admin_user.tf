@@ -5,6 +5,6 @@ resource random_string db_user {
 
 resource random_password db_password {
   length = 25
-  special = true
+  special = var.generate_url_friendly_password ? false : true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }

@@ -5,7 +5,7 @@ output db_instance_id {
 
 output db_host_name {
   description = "Host name of the DB endpoint"
-  value = aws_db_instance.postgresql.endpoint
+  value = split(":", aws_db_instance.postgresql.endpoint)[0]
 }
 
 output db_host_ip {

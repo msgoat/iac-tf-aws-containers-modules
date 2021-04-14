@@ -1,4 +1,6 @@
 locals {
+  # make sure that random user name does not start with a digit
+  db_master_user_name = length(regexall("^[[:digit:]]", random_string.db_user.result)) > 0 ? "pg${random_string.db_user.result}" : random_string.db_user.result
   db_instance_name = "postgres-${var.region_name}-${var.solution_fqn}-${var.db_instance_name}"
 }
 
@@ -20,7 +22,7 @@ resource aws_db_instance postgresql {
   skip_final_snapshot = true
   # maintenance_window = "00:00-06:00"
   copy_tags_to_snapshot = true
-  username = random_string.db_user.result
+  username =  local.db_master_user_name
   password = random_password.db_password.result
   iam_database_authentication_enabled = true
   db_subnet_group_name = aws_db_subnet_group.postgresql.name
