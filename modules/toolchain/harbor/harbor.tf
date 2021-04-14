@@ -18,7 +18,7 @@ resource helm_release harbor {
   }
   set {
     name = "externalURL"
-    value = "docker.${var.public_dns_zone_name}"
+    value = "https://docker.${var.public_dns_zone_name}"
   }
   set {
     name = "persistence.imageChartStorage.s3.region"
@@ -38,7 +38,7 @@ resource helm_release harbor {
   }
   set {
     name = "database.external.host"
-    value = module.postgresql.db_host_ip
+    value = module.postgresql.db_host_name
   }
   set {
     name = "database.external.port"
