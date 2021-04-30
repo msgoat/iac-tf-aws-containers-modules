@@ -1,6 +1,6 @@
 resource helm_release kube_prometheus_stack {
   chart = "kube-prometheus-stack"
-  version = "14.4.0"
+  version = "15.2.0"
   name = var.helm_release_name
   dependency_update = true
   atomic = true

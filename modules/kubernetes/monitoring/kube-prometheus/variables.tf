@@ -42,7 +42,7 @@ variable kubernetes_namespace_name {
 variable helm_release_name {
   description = "Name of the Helm release which represents a deployment of this stack"
   type = string
-  default = "kube-prometheus"
+  default = "kube-prometheus-stack"
 }
 
 variable public_dns_zone_name {

@@ -1,5 +1,5 @@
-resource aws_route53_record harbor {
-  name = "docker.${var.public_dns_zone_name}"
+resource aws_route53_record application {
+  name = "${var.application_name}.${var.public_dns_zone_name}"
   type = "A"
   zone_id = data.aws_route53_zone.host.id
 

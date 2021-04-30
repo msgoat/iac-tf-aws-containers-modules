@@ -1,8 +1,8 @@
-resource aws_lb_listener_rule harbor {
+resource aws_lb_listener_rule application {
   listener_arn = data.aws_lb_listener.https.arn
   condition {
     host_header {
-      values = ["docker.${var.public_dns_zone_name}"]
+      values = ["${var.application_name}.${var.public_dns_zone_name}"]
     }
   }
   action {

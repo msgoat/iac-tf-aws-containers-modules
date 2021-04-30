@@ -36,17 +36,22 @@ variable kube_config_file_name {
 variable kubernetes_namespace_name {
   description = "Name of the Kubernetes namespace to deploy to"
   type = string
-  default = "tool-nexus"
+  default = "tool-application"
 }
 
 variable helm_release_name {
   description = "Name of the Helm release which represents a deployment of this stack"
   type = string
-  default = "nexus"
+  default = "application"
 }
 
 variable public_dns_zone_name {
   description = "Name of the public hosted zone in Route53 which contains all public DNS records of this AWS solution"
+  type = string
+}
+
+variable eks_cluster_name {
+  description = "Name of an AWS EKS cluster"
   type = string
 }
 
@@ -57,5 +62,10 @@ variable loadbalancer_id {
 
 variable loadbalancer_target_group_id {
   description = "Unique identifier of the default loadbalancer target group"
+  type = string
+}
+
+variable application_name {
+  description = "Name of the application to route into the AWS EKS cluster"
   type = string
 }
