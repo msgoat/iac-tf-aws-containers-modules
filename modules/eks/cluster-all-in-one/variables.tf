@@ -156,13 +156,3 @@ variable private_endpoint_enabled {
   type = bool
   default = false
 }
-
-variable kube_config_file_dir {
-  description = "Name of a directory the kube configuration file should be copied to"
-  type = string
-}
-
-variable aws_profile_name {
-  description = "Name of an AWS profile to be used for AWS EKS cluster access"
-  type = string
-}

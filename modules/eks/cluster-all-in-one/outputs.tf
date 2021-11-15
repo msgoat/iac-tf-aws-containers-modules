@@ -1,8 +1,3 @@
-output kube_config_file_name {
-  description = "Full pathname of the Kubernetes configuration file to access this AWS EKS cluster"
-  value = local_file.kube_config.filename
-}
-
 output eks_cluster_arn {
   description = "Unique identifier of the AWS EKS cluster"
   value = aws_eks_cluster.control_plane.arn

@@ -36,3 +36,7 @@ resource aws_eks_cluster control_plane {
     aws_iam_role_policy_attachment.eks_vpc_resource_controller,
   ]
 }
+
+data aws_eks_cluster_auth control_plane {
+  name = aws_eks_cluster.control_plane.name
+}
