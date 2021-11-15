@@ -1,7 +1,7 @@
 resource helm_release aws_loadbalancer_controller {
   name = "aws-load-balancer-controller"
   chart = "aws-load-balancer-controller"
-  version = "1.1.6"
+  version = "1.3.2"
   dependency_update = true
   atomic = true
   cleanup_on_fail = true
